@@ -3,15 +3,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
 
 public class PantallaJuego extends JFrame {
 
@@ -32,6 +33,16 @@ public class PantallaJuego extends JFrame {
     private JButton btnPublico;
     private JButton btnLlamada;
 
+    // ==========================================
+    // COMPONENTES DEL PANEL DE MENSAJES INTERNO
+    // ==========================================
+    private JPanel panelMensaje;
+    private JLabel lblTituloMensaje;
+    private JTextArea txtMensaje;
+    private JButton btnAceptarMensaje;
+    // 0: Solo cerrar panel | 1: Siguiente pregunta | 2: Cerrar ventana (Fin de partida)
+    private int accionPosterior = 0; 
+
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
         setTitle("El Concursillo");
         this.logica = logicaRecibida;
@@ -47,29 +58,82 @@ public class PantallaJuego extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
+        // ====================================================
+        // CONFIGURACIÓN DEL PANEL SUPERPUESTO (Estilo Info)
+        // ====================================================
+        panelMensaje = new JPanel();
+        panelMensaje.setBounds(160, 150, 600, 350);
+        panelMensaje.setBackground(new Color(40, 20, 70)); // Morado oscuro elegante
+        panelMensaje.setBorder(new LineBorder(Color.WHITE, 3, true));
+        panelMensaje.setLayout(null);
+        panelMensaje.setVisible(false); // Oculto al inicio
+        contentPane.add(panelMensaje);
+
+        lblTituloMensaje = new JLabel("TÍTULO");
+        lblTituloMensaje.setForeground(Color.WHITE);
+        lblTituloMensaje.setFont(new Font("Tahoma", Font.BOLD, 22));
+        lblTituloMensaje.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTituloMensaje.setBounds(10, 20, 580, 35);
+        panelMensaje.add(lblTituloMensaje);
+
+        txtMensaje = new JTextArea();
+        txtMensaje.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        txtMensaje.setForeground(Color.WHITE);
+        txtMensaje.setBackground(new Color(40, 20, 70));
+        txtMensaje.setEditable(false);
+        txtMensaje.setFocusable(false);
+        txtMensaje.setLineWrap(true);
+        txtMensaje.setWrapStyleWord(true);
+        txtMensaje.setBounds(40, 80, 520, 180);
+        panelMensaje.add(txtMensaje);
+
+        btnAceptarMensaje = new JButton("Aceptar");
+        btnAceptarMensaje.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnAceptarMensaje.setBackground(Color.WHITE);
+        btnAceptarMensaje.setForeground(new Color(40, 20, 70));
+        btnAceptarMensaje.setBounds(230, 280, 140, 40);
+        btnAceptarMensaje.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panelMensaje.setVisible(false);
+                if (accionPosterior == 1) {
+                    indiceActual++;
+                    actualizarTablero();
+                } else if (accionPosterior == 2) {
+                    dispose(); // Cierra la pantalla de juego al terminar
+                }
+            }
+        });
+        panelMensaje.add(btnAceptarMensaje);
+
+        // Aseguramos que el panel siempre esté por encima del resto de botones e imágenes
+        contentPane.setComponentZOrder(panelMensaje, 0);
+
+        // ==========================================
+        // BOTONES DE RESPUESTA Y COMPONENTES
+        // ==========================================
         btnRespuestaA = new JButton("A");
-        btnRespuestaA.setBounds(581, 559, 135, 56);
+        btnRespuestaA.setBounds(75, 443, 309, 97);
         btnRespuestaA.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
         });
         contentPane.add(btnRespuestaA);
 
         btnRespuestaB = new JButton("B");
-        btnRespuestaB.setBounds(581, 497, 135, 56);
+        btnRespuestaB.setBounds(75, 551, 309, 97);
         btnRespuestaB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
         });
         contentPane.add(btnRespuestaB);
 
         btnRespuestaC = new JButton("C");
-        btnRespuestaC.setBounds(726, 497, 135, 56);
+        btnRespuestaC.setBounds(495, 443, 309, 97);
         btnRespuestaC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
         });
         contentPane.add(btnRespuestaC);
 
         btnRespuestaD = new JButton("D");
-        btnRespuestaD.setBounds(726, 559, 135, 56);
+        btnRespuestaD.setBounds(495, 551, 309, 97);
         btnRespuestaD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
         });
@@ -79,7 +143,7 @@ public class PantallaJuego extends JFrame {
         lblEnunciado.setHorizontalAlignment(SwingConstants.CENTER);
         lblEnunciado.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblEnunciado.setForeground(Color.WHITE);
-        lblEnunciado.setBounds(26, 507, 545, 97);
+        lblEnunciado.setBounds(142, 59, 719, 97);
         contentPane.add(lblEnunciado);
 
         lblDinero = new JLabel("");
@@ -101,15 +165,12 @@ public class PantallaJuego extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int dineroGanado = logica.getDineroActual();
                 
-                // <--- AQUÍ GUARDAMOS EN MONGO AL PLANTARSE
                 ConexionMongo mongo = new ConexionMongo();
                 mongo.guardarPartida(nombreJugador, dineroGanado);
                 
-                JOptionPane.showMessageDialog(null, 
-                    "¡Sabia decisión, " + nombreJugador + "!\n" +
-                    "Has decidido plantarte y te llevas: " + dineroGanado + "€");
-          
-                dispose(); 
+                mostrarMensaje("DECISIÓN TOMADA", 
+                    "\n¡Sabia decisión, " + nombreJugador.toUpperCase() + "!\n\n" +
+                    "Has decidido plantarte y te llevas: " + dineroGanado + "€", 2);
             }
         });
         btnPlantarse.setBounds(195, 11, 516, 37);
@@ -121,8 +182,6 @@ public class PantallaJuego extends JFrame {
         contentPane.add(lblNewLabel);
         
         btnComodin50 = new JButton("Comodin 50%");
-        btnComodin50.setForeground(new Color(255, 255, 255));
-        btnComodin50.setBackground(new Color(95, 41, 160));
         btnComodin50.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta pActual = listaPreguntas.get(indiceActual);
@@ -152,8 +211,6 @@ public class PantallaJuego extends JFrame {
         contentPane.add(lblNewLabel_1);
         
         btnPublico = new JButton("Comodin Publico");
-        btnPublico.setForeground(new Color(255, 255, 255));
-        btnPublico.setBackground(new Color(95, 41, 160));
         btnPublico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -163,14 +220,14 @@ public class PantallaJuego extends JFrame {
                 if(p.getRespuestaCorrecta() == 2) respuestaCorrecta = 'C';
                 if(p.getRespuestaCorrecta() == 3) respuestaCorrecta = 'D';
 
-                String estadistica = "Resultados del Público:\n" +
-                                     "A: 10%\n" +
-                                     "B: 15%\n" +
-                                     "C: 65%\n" + 
-                                     "D: 10%\n\n" +
-                                     "El público cree que la respuesta es la " + respuestaCorrecta;
+                String estadistica = "Resultados votación del público:\n\n" +
+                                     "  • Opción A: 10%\n" +
+                                     "  • Opción B: 15%\n" +
+                                     "  • Opción C: 65%\n" + 
+                                     "  • Opción D: 10%\n\n" +
+                                     "El público cree mayoritariamente que la respuesta es la " + respuestaCorrecta;
 
-                JOptionPane.showMessageDialog(null, estadistica, "Comodín del Público", JOptionPane.INFORMATION_MESSAGE);
+                mostrarMensaje("COMODÍN DEL PÚBLICO", estadistica, 0);
                 
                 btnPublico.setEnabled(false);
                 btnPublico.setBackground(Color.GRAY);
@@ -180,19 +237,16 @@ public class PantallaJuego extends JFrame {
         contentPane.add(btnPublico);
         
         btnLlamada = new JButton("Comodin LLamada");
-        btnLlamada.setForeground(new Color(255, 255, 255));
-        btnLlamada.setBackground(new Color(95, 41, 160));
         btnLlamada.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
                 String[] opciones = {"A", "B", "C", "D"};
                 String sugerencia = opciones[p.getRespuestaCorrecta()];
 
-                String mensajeLlamada = "Tu amigo dice:\n" +
-                                        "'¡Hola! Pues estoy casi seguro de que\n" +
-                                        "la respuesta correcta es la " + sugerencia + ".'";
+                String mensajeLlamada = "\nTu amigo al teléfono te dice:\n\n" +
+                                        "\"¡Hola! Pues a ver, no te lo garantizo al 100% pero estoy casi seguro de que la respuesta correcta es la " + sugerencia + ".\"";
 
-                JOptionPane.showMessageDialog(null, mensajeLlamada, "Comodín de la Llamada", JOptionPane.WARNING_MESSAGE);
+                mostrarMensaje("COMODÍN DE LA LLAMADA", mensajeLlamada, 0);
                 
                 btnLlamada.setEnabled(false); 
                 btnLlamada.setBackground(Color.GRAY);
@@ -206,6 +260,16 @@ public class PantallaJuego extends JFrame {
         actualizarTablero();
     }
 
+    // Método auxiliar para personalizar y abrir el panel superpuesto fácilmente
+    private void mostrarMensaje(String titulo, String texto, int accion) {
+        lblTituloMensaje.setText(titulo);
+        txtMensaje.setText(texto);
+        this.accionPosterior = accion;
+        panelMensaje.setVisible(true);
+        contentPane.setComponentZOrder(panelMensaje, 0);
+        contentPane.repaint();
+    }
+
     public void actualizarTablero() {
         if (indiceActual < listaPreguntas.size()) {
             Pregunta p = listaPreguntas.get(indiceActual);
@@ -216,28 +280,27 @@ public class PantallaJuego extends JFrame {
             btnRespuestaD.setText("D: " + p.getOpciones()[3]);
             lblDinero.setText("Dinero: " + logica.getDineroActual() + "€");
         } else {
-            // <--- AQUÍ GUARDAMOS EN MONGO AL GANAR EL MILLÓN
             ConexionMongo mongo = new ConexionMongo();
             mongo.guardarPartida(nombreJugador, 1000000);
 
-            JOptionPane.showMessageDialog(this, "¡ENHORABUENA! ¡ERES MILLONARIO!");
-            dispose();
+            mostrarMensaje("¡VICTORIA ABSOLUTA!", 
+                "\n¡ENHORABUENA " + nombreJugador.toUpperCase() + "!\n\n" +
+                "Has respondido las 15 preguntas correctamente. ¡ERES MILLONARIO!", 2);
         }
     }
 
     private void comprobarRespuesta(int opcion) {
         if (logica.comprobarRespuesta(listaPreguntas.get(indiceActual), opcion)) {
-            JOptionPane.showMessageDialog(this, "¡Correcto!");
-            indiceActual++;
-            actualizarTablero();
+            // Mostrar panel de acierto y programar el avance a la siguiente pregunta
+            mostrarMensaje("¡RESPUESTA CORRECTA!", "\n¡Muy bien jugado!\n\nLa respuesta seleccionada es totalmente correcta.", 1);
         } else {
             int premioConsolacion = logica.getDineroSiFalla();
             
             ConexionMongo mongo = new ConexionMongo();
             mongo.guardarPartida(nombreJugador, premioConsolacion);
 
-            JOptionPane.showMessageDialog(this, "¡Illooo fallaste! Te llevas: " + premioConsolacion + "€");
-            dispose(); 
+            mostrarMensaje("¡RESPUESTA INCORRECTA!", 
+                "\n¡Illooo fallaste!\n\nHas marcado la opción equivocada. Te llevas el premio de seguridad acumulado: " + premioConsolacion + "€", 2);
         }
     }
 }
