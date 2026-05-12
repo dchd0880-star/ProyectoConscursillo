@@ -71,16 +71,15 @@ public class MenuPrincipal extends JFrame {
 			    if (nombreUsuario.trim().isEmpty()) {
 			        javax.swing.JOptionPane.showMessageDialog(null, "¡Illo, pon tu nombre para jugar!");
 			    } else {
-		            // 2. Creamos la lógica que ya tienes definida
+		         
 		            LogicaJuego miLogica = new LogicaJuego();
 		            
-		            // 3. CREAMOS EL NUEVO FRAME y le pasamos los datos
+		         
 		            PantallaJuego ventanaJuego = new PantallaJuego(miLogica, nombreUsuario);
 		            
-		            // 4. HACEMOS VISIBLE LA NUEVA VENTANA
+		    
 		            ventanaJuego.setVisible(true);
-		            
-		            // 5. CERRAMOS EL MENÚ ACTUAL (this es el MenuPrincipal)
+		    
 		            dispose(); 
 		        }
 		    }

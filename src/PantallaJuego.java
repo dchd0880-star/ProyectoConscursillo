@@ -23,7 +23,7 @@ public class PantallaJuego extends JFrame {
     private ArrayList<Pregunta> listaPreguntas;
     private int indiceActual = 0;
 
-    // Componentes visuales declarados como variables de clase
+
     private JLabel lblEnunciado;
     private JLabel lblDinero;
     private JLabel lblNombreJugador;
@@ -35,25 +35,23 @@ public class PantallaJuego extends JFrame {
     private JButton btnPublico;
     private JButton btnLlamada;
 
-    /**
-     * Constructor de la Pantalla de Juego
-     */
+  
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
         this.logica = logicaRecibida;
         this.nombreJugador = nombreRecibido;
 
-        // Configuración básica de la ventana
+    
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 924, 692);
         setResizable(false);
         setLocationRelativeTo(null);
 
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(187, 119, 255)); // Mismo color que el menú
+        contentPane.setBackground(new Color(187, 119, 255)); 
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-        // Inicialización de componentes (Usando las variables de clase)
+  
         btnRespuestaA = new JButton("A");
         btnRespuestaA.setBounds(48, 417, 366, 109);
         btnRespuestaA.addActionListener(new ActionListener() {
@@ -111,12 +109,10 @@ public class PantallaJuego extends JFrame {
                 JOptionPane.showMessageDialog(null, 
                     "¡Sabia decisión, " + nombreJugador + "!\n" +
                     "Has decidido plantarte y te llevas: " + dineroGanado + "€");
-                
-                // Cerramos la ventana de juego
+          
                 dispose(); 
                 
-                // OPCIONAL: Aquí podrías abrir de nuevo el MenuPrincipal
-                // new MenuPrincipal().setVisible(true);
+               
         	}
         });
         btnPlantarse.setBounds(195, 11, 516, 37);
@@ -134,10 +130,10 @@ public class PantallaJuego extends JFrame {
                 int correcta = pActual.getRespuestaCorrecta();
                 int borradores = 0;
 
-                // Recorremos las opciones (0 a 3)
+           
                 for (int i = 0; i < 4; i++) {
                     if (i != correcta && borradores < 2) {
-                        // Si no es la correcta, borramos el texto del botón correspondiente
+
                         if (i == 0) btnRespuestaA.setText("");
                         if (i == 1) btnRespuestaB.setText("");
                         if (i == 2) btnRespuestaC.setText("");
@@ -145,7 +141,7 @@ public class PantallaJuego extends JFrame {
                         borradores++;
                     }
                 }
-                // IMPORTANTE: Un comodín solo se puede usar una vez
+      
                 btnComodin50.setEnabled(false); 
                 btnComodin50.setBackground(Color.GRAY);
         	}
@@ -165,7 +161,6 @@ public class PantallaJuego extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		Pregunta p = listaPreguntas.get(indiceActual);
                 char respuestaCorrecta = ' ';
-                // Averiguamos cuál es la letra correcta para el mensaje
                 if(p.getRespuestaCorrecta() == 0) respuestaCorrecta = 'A';
                 if(p.getRespuestaCorrecta() == 1) respuestaCorrecta = 'B';
                 if(p.getRespuestaCorrecta() == 2) respuestaCorrecta = 'C';
@@ -180,7 +175,7 @@ public class PantallaJuego extends JFrame {
 
                 JOptionPane.showMessageDialog(null, estadistica, "Comodín del Público", JOptionPane.INFORMATION_MESSAGE);
                 
-                btnPublico.setEnabled(false); // Se gasta
+                btnPublico.setEnabled(false);
                 btnPublico.setBackground(Color.GRAY);
         	}
         });
@@ -207,19 +202,18 @@ public class PantallaJuego extends JFrame {
         btnLlamada.setBounds(10, 244, 135, 37);
         contentPane.add(btnLlamada);
 
-        // Carga de datos inicial
+       
         BaseDatosLocal bd = new BaseDatosLocal();
         this.listaPreguntas = bd.cargarPreguntas();
         actualizarTablero();
     }
 
-    /**
-     * Actualiza los textos de la pantalla con la pregunta actual
-     */
+    
+    
+    
     public void actualizarTablero() {
         if (indiceActual < listaPreguntas.size()) {
             Pregunta p = listaPreguntas.get(indiceActual);
-            // El uso de <html> permite que el texto haga salto de línea automático
             lblEnunciado.setText("<html><body style='width: 500px'>" + p.getEnunciado() + "</body></html>");
             btnRespuestaA.setText("A: " + p.getOpciones()[0]);
             btnRespuestaB.setText("B: " + p.getOpciones()[1]);
@@ -232,9 +226,7 @@ public class PantallaJuego extends JFrame {
         }
     }
 
-    /**
-     * Lógica para comprobar si el botón pulsado es el correcto
-     */
+    
     private void comprobarRespuesta(int opcion) {
         if (logica.comprobarRespuesta(listaPreguntas.get(indiceActual), opcion)) {
             JOptionPane.showMessageDialog(this, "¡Correcto!");
@@ -242,7 +234,7 @@ public class PantallaJuego extends JFrame {
             actualizarTablero();
         } else {
             JOptionPane.showMessageDialog(this, "¡Illooo fallaste! Te llevas: " + logica.getDineroSiFalla() + "€");
-            dispose(); // Cierra el juego y podrías volver al menú aquí
+            dispose(); //
         }
     }
     
