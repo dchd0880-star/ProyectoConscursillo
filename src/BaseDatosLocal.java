@@ -10,18 +10,17 @@ import java.util.List;
 
 public class BaseDatosLocal {
     
-    // Tu cadena de conexión de Atlas
+  
     private final String URI = "mongodb+srv://dchd0880_db_user:BFyNiEnlQMgVeVtR@proyectoconcursillo.2z703nl.mongodb.net/";
 
     public ArrayList<Pregunta> cargarPreguntas() {
     	ArrayList<Pregunta> lista = new ArrayList<>();
         
         try (MongoClient mongoClient = MongoClients.create(URI)) {
-            MongoDatabase database = mongoClient.getDatabase("proyectoconcursillo");
+            MongoDatabase database = mongoClient.getDatabase("ProyectoConcursillo");
             MongoCollection<Document> collection = database.getCollection("preguntas");
 
-            // --- CAMBIO AQUÍ: Usamos un Aggregate para traer 16 aleatorias ---
-            // $sample: size 16 elige documentos al azar de toda tu colección
+         
             List<Document> pipeline = Arrays.asList(new Document("$sample", new Document("size", 16)));
             AggregateIterable<Document> resultados = collection.aggregate(pipeline);
 
