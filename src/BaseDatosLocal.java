@@ -1,9 +1,11 @@
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BaseDatosLocal {
@@ -12,30 +14,35 @@ public class BaseDatosLocal {
     private final String URI = "mongodb+srv://dchd0880_db_user:BFyNiEnlQMgVeVtR@proyectoconcursillo.2z703nl.mongodb.net/";
 
     public ArrayList<Pregunta> cargarPreguntas() {
-        ArrayList<Pregunta> lista = new ArrayList<>();
+    	ArrayList<Pregunta> lista = new ArrayList<>();
         
         try (MongoClient mongoClient = MongoClients.create(URI)) {
-            MongoDatabase database = mongoClient.getDatabase("ProyectoConcursillo");
+            MongoDatabase database = mongoClient.getDatabase("proyectoconcursillo");
             MongoCollection<Document> collection = database.getCollection("preguntas");
 
-            // Leemos todos los documentos de la colección "preguntas"
-            for (Document doc : collection.find()) {
-            	String enunciado = doc.getString("enunciado");
-            	List<String> opcionesList = (List<String>) doc.get("opciones");
-            	String[] opciones = opcionesList.toArray(new String[0]);
+            // --- CAMBIO AQUÍ: Usamos un Aggregate para traer 16 aleatorias ---
+            // $sample: size 16 elige documentos al azar de toda tu colección
+            List<Document> pipeline = Arrays.asList(new Document("$sample", new Document("size", 16)));
+            AggregateIterable<Document> resultados = collection.aggregate(pipeline);
 
-            	// OJO AQUÍ: Asegúrate de que en Mongo el campo sea "correcta" (minúsculas)
-            	int correcta = doc.getInteger("correcta"); 
-            	int nivel = doc.getInteger("nivel");
+            for (Document doc : resultados) {
+                String enunciado = doc.getString("enunciado");
+                
+                List<String> opcionesList = (List<String>) doc.get("opciones");
+                String[] opciones = opcionesList.toArray(new String[0]);
+                
+                int correcta = doc.getInteger("correcta");
+                int nivel = doc.getInteger("nivel");
 
-            	// Creamos el objeto usando tus variables locales
-            	lista.add(new Pregunta(enunciado, opciones, correcta, nivel));
+                lista.add(new Pregunta(enunciado, opciones, correcta, nivel));
             }
-            System.out.println("Preguntas cargadas con éxito desde Atlas.");
+            
+            System.out.println("Partida lista con " + lista.size() + " preguntas aleatorias.");
+            
         } catch (Exception e) {
             System.err.println("Error al cargar preguntas: " + e.getMessage());
         }
-        System.out.println("DEBUG: He cargado " + lista.size() + " preguntas.");
+
         return lista;
     }
 }
