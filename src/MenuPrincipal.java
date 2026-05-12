@@ -19,7 +19,8 @@ public class MenuPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtNombre;
-
+	private JLabel lblError;
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -60,15 +61,25 @@ public class MenuPrincipal extends JFrame {
 		lblNombre.setBounds(680, 148, 218, 33);
 		contentPane.add(lblNombre);
 		
+		
+		lblError = new JLabel("");
+		lblError.setForeground(Color.RED);
+		lblError.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblError.setBounds(10, 50, 200, 20); // Ajusta las coordenadas a tu diseño
+		contentPane.add(lblError);
+		
 		JButton btnNuevaPartida = new JButton("Empezar Partida");
 		btnNuevaPartida.setSelectedIcon(null);
 		btnNuevaPartida.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/ImagenesBotones/BotonEmpezar2.png")));
 		btnNuevaPartida.addActionListener(new ActionListener() {
+			
+			
+			
 			public void actionPerformed(ActionEvent e) {
 			    String nombreUsuario = txtNombre.getText();
 
 			    if (nombreUsuario.trim().isEmpty()) {
-			        javax.swing.JOptionPane.showMessageDialog(null, "¡Illo, pon tu nombre para jugar!");
+			    	lblError.setText("¡Illo, pon tu nombre para jugar!");
 			    } else {
 		         
 		            LogicaJuego miLogica = new LogicaJuego();

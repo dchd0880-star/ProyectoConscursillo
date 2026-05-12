@@ -48,28 +48,28 @@ public class PantallaJuego extends JFrame {
         setContentPane(contentPane);
 
         btnRespuestaA = new JButton("A");
-        btnRespuestaA.setBounds(75, 443, 309, 97);
+        btnRespuestaA.setBounds(581, 559, 135, 56);
         btnRespuestaA.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
         });
         contentPane.add(btnRespuestaA);
 
         btnRespuestaB = new JButton("B");
-        btnRespuestaB.setBounds(75, 551, 309, 97);
+        btnRespuestaB.setBounds(581, 497, 135, 56);
         btnRespuestaB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
         });
         contentPane.add(btnRespuestaB);
 
         btnRespuestaC = new JButton("C");
-        btnRespuestaC.setBounds(495, 443, 309, 97);
+        btnRespuestaC.setBounds(726, 497, 135, 56);
         btnRespuestaC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
         });
         contentPane.add(btnRespuestaC);
 
         btnRespuestaD = new JButton("D");
-        btnRespuestaD.setBounds(495, 551, 309, 97);
+        btnRespuestaD.setBounds(726, 559, 135, 56);
         btnRespuestaD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
         });
@@ -79,7 +79,7 @@ public class PantallaJuego extends JFrame {
         lblEnunciado.setHorizontalAlignment(SwingConstants.CENTER);
         lblEnunciado.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblEnunciado.setForeground(Color.WHITE);
-        lblEnunciado.setBounds(142, 59, 719, 97);
+        lblEnunciado.setBounds(26, 507, 545, 97);
         contentPane.add(lblEnunciado);
 
         lblDinero = new JLabel("");
@@ -121,6 +121,8 @@ public class PantallaJuego extends JFrame {
         contentPane.add(lblNewLabel);
         
         btnComodin50 = new JButton("Comodin 50%");
+        btnComodin50.setForeground(new Color(255, 255, 255));
+        btnComodin50.setBackground(new Color(95, 41, 160));
         btnComodin50.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta pActual = listaPreguntas.get(indiceActual);
@@ -150,6 +152,8 @@ public class PantallaJuego extends JFrame {
         contentPane.add(lblNewLabel_1);
         
         btnPublico = new JButton("Comodin Publico");
+        btnPublico.setForeground(new Color(255, 255, 255));
+        btnPublico.setBackground(new Color(95, 41, 160));
         btnPublico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -176,6 +180,8 @@ public class PantallaJuego extends JFrame {
         contentPane.add(btnPublico);
         
         btnLlamada = new JButton("Comodin LLamada");
+        btnLlamada.setForeground(new Color(255, 255, 255));
+        btnLlamada.setBackground(new Color(95, 41, 160));
         btnLlamada.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
