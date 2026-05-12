@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -23,24 +22,21 @@ public class PantallaJuego extends JFrame {
     private ArrayList<Pregunta> listaPreguntas;
     private int indiceActual = 0;
 
-
     private JLabel lblEnunciado;
     private JLabel lblDinero;
     private JLabel lblNombreJugador;
-    private JButton btnRespuestaA, btnRespuestaB, btnRespuestaC, btnRespuestaD,btnPlantarse;
-   
+    private JButton btnRespuestaA, btnRespuestaB, btnRespuestaC, btnRespuestaD, btnPlantarse;
     private JLabel lblNewLabel;
     private JButton btnComodin50;
     private JLabel lblNewLabel_1;
     private JButton btnPublico;
     private JButton btnLlamada;
 
-  
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
+        setTitle("El Concursillo");
         this.logica = logicaRecibida;
         this.nombreJugador = nombreRecibido;
 
-    
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 924, 692);
         setResizable(false);
@@ -51,30 +47,29 @@ public class PantallaJuego extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-  
         btnRespuestaA = new JButton("A");
-        btnRespuestaA.setBounds(48, 417, 366, 109);
+        btnRespuestaA.setBounds(75, 443, 309, 97);
         btnRespuestaA.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
         });
         contentPane.add(btnRespuestaA);
 
         btnRespuestaB = new JButton("B");
-        btnRespuestaB.setBounds(48, 539, 366, 109);
+        btnRespuestaB.setBounds(75, 551, 309, 97);
         btnRespuestaB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
         });
         contentPane.add(btnRespuestaB);
 
         btnRespuestaC = new JButton("C");
-        btnRespuestaC.setBounds(495, 417, 366, 109);
+        btnRespuestaC.setBounds(495, 443, 309, 97);
         btnRespuestaC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
         });
         contentPane.add(btnRespuestaC);
 
         btnRespuestaD = new JButton("D");
-        btnRespuestaD.setBounds(495, 539, 366, 109);
+        btnRespuestaD.setBounds(495, 551, 309, 97);
         btnRespuestaD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
         });
@@ -103,37 +98,37 @@ public class PantallaJuego extends JFrame {
         
         btnPlantarse = new JButton("Rendirse");
         btnPlantarse.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		int dineroGanado = logica.getDineroActual();
+            public void actionPerformed(ActionEvent e) {
+                int dineroGanado = logica.getDineroActual();
+                
+                // <--- AQUÍ GUARDAMOS EN MONGO AL PLANTARSE
+                ConexionMongo mongo = new ConexionMongo();
+                mongo.guardarPartida(nombreJugador, dineroGanado);
                 
                 JOptionPane.showMessageDialog(null, 
                     "¡Sabia decisión, " + nombreJugador + "!\n" +
                     "Has decidido plantarte y te llevas: " + dineroGanado + "€");
           
                 dispose(); 
-                
-               
-        	}
+            }
         });
         btnPlantarse.setBounds(195, 11, 516, 37);
         contentPane.add(btnPlantarse);
         
         lblNewLabel = new JLabel("");
         lblNewLabel.setIcon(new ImageIcon(PantallaJuego.class.getResource("/imagenes/FotoPreguntas.png")));
-        lblNewLabel.setBounds(178, 74, 709, 500);
+        lblNewLabel.setBounds(189, 11, 709, 500);
         contentPane.add(lblNewLabel);
         
         btnComodin50 = new JButton("Comodin 50%");
         btnComodin50.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		Pregunta pActual = listaPreguntas.get(indiceActual);
+            public void actionPerformed(ActionEvent e) {
+                Pregunta pActual = listaPreguntas.get(indiceActual);
                 int correcta = pActual.getRespuestaCorrecta();
                 int borradores = 0;
 
-           
                 for (int i = 0; i < 4; i++) {
                     if (i != correcta && borradores < 2) {
-
                         if (i == 0) btnRespuestaA.setText("");
                         if (i == 1) btnRespuestaB.setText("");
                         if (i == 2) btnRespuestaC.setText("");
@@ -141,11 +136,9 @@ public class PantallaJuego extends JFrame {
                         borradores++;
                     }
                 }
-      
                 btnComodin50.setEnabled(false); 
                 btnComodin50.setBackground(Color.GRAY);
-        	}
-        	
+            }
         });
         btnComodin50.setBounds(10, 148, 135, 37);
         contentPane.add(btnComodin50);
@@ -158,8 +151,8 @@ public class PantallaJuego extends JFrame {
         
         btnPublico = new JButton("Comodin Publico");
         btnPublico.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		Pregunta p = listaPreguntas.get(indiceActual);
+            public void actionPerformed(ActionEvent e) {
+                Pregunta p = listaPreguntas.get(indiceActual);
                 char respuestaCorrecta = ' ';
                 if(p.getRespuestaCorrecta() == 0) respuestaCorrecta = 'A';
                 if(p.getRespuestaCorrecta() == 1) respuestaCorrecta = 'B';
@@ -177,15 +170,15 @@ public class PantallaJuego extends JFrame {
                 
                 btnPublico.setEnabled(false);
                 btnPublico.setBackground(Color.GRAY);
-        	}
+            }
         });
         btnPublico.setBounds(10, 196, 135, 37);
         contentPane.add(btnPublico);
         
         btnLlamada = new JButton("Comodin LLamada");
         btnLlamada.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		Pregunta p = listaPreguntas.get(indiceActual);
+            public void actionPerformed(ActionEvent e) {
+                Pregunta p = listaPreguntas.get(indiceActual);
                 String[] opciones = {"A", "B", "C", "D"};
                 String sugerencia = opciones[p.getRespuestaCorrecta()];
 
@@ -195,22 +188,18 @@ public class PantallaJuego extends JFrame {
 
                 JOptionPane.showMessageDialog(null, mensajeLlamada, "Comodín de la Llamada", JOptionPane.WARNING_MESSAGE);
                 
-                btnLlamada.setEnabled(false); // Se gasta
+                btnLlamada.setEnabled(false); 
                 btnLlamada.setBackground(Color.GRAY);
             }
         });
         btnLlamada.setBounds(10, 244, 135, 37);
         contentPane.add(btnLlamada);
 
-       
         BaseDatosLocal bd = new BaseDatosLocal();
         this.listaPreguntas = bd.cargarPreguntas();
         actualizarTablero();
     }
 
-    
-    
-    
     public void actualizarTablero() {
         if (indiceActual < listaPreguntas.size()) {
             Pregunta p = listaPreguntas.get(indiceActual);
@@ -221,21 +210,28 @@ public class PantallaJuego extends JFrame {
             btnRespuestaD.setText("D: " + p.getOpciones()[3]);
             lblDinero.setText("Dinero: " + logica.getDineroActual() + "€");
         } else {
+            // <--- AQUÍ GUARDAMOS EN MONGO AL GANAR EL MILLÓN
+            ConexionMongo mongo = new ConexionMongo();
+            mongo.guardarPartida(nombreJugador, 1000000);
+
             JOptionPane.showMessageDialog(this, "¡ENHORABUENA! ¡ERES MILLONARIO!");
             dispose();
         }
     }
 
-    
     private void comprobarRespuesta(int opcion) {
         if (logica.comprobarRespuesta(listaPreguntas.get(indiceActual), opcion)) {
             JOptionPane.showMessageDialog(this, "¡Correcto!");
             indiceActual++;
             actualizarTablero();
         } else {
-            JOptionPane.showMessageDialog(this, "¡Illooo fallaste! Te llevas: " + logica.getDineroSiFalla() + "€");
-            dispose(); //
+            int premioConsolacion = logica.getDineroSiFalla();
+            
+            ConexionMongo mongo = new ConexionMongo();
+            mongo.guardarPartida(nombreJugador, premioConsolacion);
+
+            JOptionPane.showMessageDialog(this, "¡Illooo fallaste! Te llevas: " + premioConsolacion + "€");
+            dispose(); 
         }
     }
-    
 }

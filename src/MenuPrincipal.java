@@ -110,7 +110,7 @@ public class MenuPrincipal extends JFrame {
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/LetrasApp.png")));
-		lblNewLabel_1.setBounds(29, 35, 518, 352);
+		lblNewLabel_1.setBounds(29, 26, 518, 361);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel = new JLabel("");
