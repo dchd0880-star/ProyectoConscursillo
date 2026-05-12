@@ -6,6 +6,12 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -44,8 +50,31 @@ public class MenuPrincipal extends JFrame {
 		setLocationRelativeTo(null); // Centra la ventana en la pantalla
 		
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(187, 119, 255));
-		contentPane.setForeground(new Color(187, 119, 255));
+		 contentPane = new JPanel() {
+	            private static final long serialVersionUID = 1L;
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                Graphics2D g2 = (Graphics2D) g.create();
+	                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	                
+	                Color colorCentro = new Color(16, 20, 43); 
+	                Color colorBorde = new Color(5, 6, 12);
+	                
+	                RadialGradientPaint rgp = new RadialGradientPaint(
+	                    new Point(getWidth() / 2, getHeight() / 2), 
+	                    (float) getWidth() / 1.5f, 
+	                    new float[]{0.0f, 1.0f}, 
+	                    new Color[]{colorCentro, colorBorde}
+	                );
+	                
+	                g2.setPaint(rgp);
+	                g2.fillRect(0, 0, getWidth(), getHeight());
+	                g2.dispose();
+	            }
+	        };
+	        contentPane.setLayout(null);
+	        setContentPane(contentPane);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
