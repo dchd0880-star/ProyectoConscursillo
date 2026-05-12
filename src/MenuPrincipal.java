@@ -100,8 +100,13 @@ public class MenuPrincipal extends JFrame {
 		btnRanking.setBorderPainted(false);
 		btnRanking.setFocusPainted(false);
 		btnRanking.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnRanking.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnRanking.addActionListener(e -> {
+			new PantallaRanking(MenuPrincipal.this).setVisible(true); // Abre el ranking pasándole el menú de referencia
+			setVisible(false); // Oculta el menú principal temporalmente
+		});
+        
 		contentPane.add(btnRanking);
-		
 		btnInfo = new JButton("");
 		btnInfo.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/ImagenesBotones/BotonInfo.png")));
 		btnInfo.setBounds(680, 11, 218, 126);
