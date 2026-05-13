@@ -98,6 +98,12 @@ public class MenuPrincipal extends JFrame {
 		contentPane.add(btnNuevaPartida);
 		
 		JButton btnRanking = new JButton("");
+		btnRanking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PantallaRanking ventanaRanking = new PantallaRanking();
+		        ventanaRanking.setVisible(true);
+			}
+		});
 		btnRanking.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/ImagenesBotones/BotonRanking2.png")));
 		btnRanking.setBounds(132, 537, 324, 63);
 		contentPane.add(btnRanking);
