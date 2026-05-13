@@ -112,6 +112,14 @@ public class MenuPrincipal extends JFrame {
 		btnNuevaPartida.setBounds(52, 428, 495, 79);
 		contentPane.add(btnNuevaPartida);
 		
+		// Mejora de usabilidad: Permite iniciar el juego pulsando la tecla 'Enter'
+				txtNombre.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// Ejecuta automáticamente la acción del botón empezar
+						btnNuevaPartida.doClick();
+					}
+				});
+		
 		// Creación del botón para acceder a la tabla de puntuaciones (Ranking)
 		JButton btnRanking = new JButton("");
 		

@@ -15,6 +15,8 @@ import javax.swing.ImageIcon;
 
 public class PantallaJuego extends JFrame {
 
+	
+	//Prueba
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private LogicaJuego logica;
