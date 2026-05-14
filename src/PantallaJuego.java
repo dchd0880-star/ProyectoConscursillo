@@ -113,11 +113,11 @@ public class PantallaJuego extends JFrame {
         lblDinero.setBounds(749, 11, 149, 47);
         contentPane.add(lblDinero);
 
-        lblNombreJugador = new JLabel("JUGADOR:<dynamic>");
+        lblNombreJugador = new JLabel("JUGADOR: " + nombreJugador);
         lblNombreJugador.setHorizontalAlignment(SwingConstants.CENTER);
         lblNombreJugador.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblNombreJugador.setForeground(Color.WHITE);
-        lblNombreJugador.setBounds(10, 11, 149, 47);
+        lblNombreJugador.setBounds(10, 11, 291, 47);
         contentPane.add(lblNombreJugador);
         
         btnPlantarse = new JButton("RENDIRSE");
