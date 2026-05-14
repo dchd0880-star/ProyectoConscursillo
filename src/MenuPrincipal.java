@@ -60,15 +60,19 @@ public class MenuPrincipal extends JFrame {
 		
 		// Campo de texto para que el usuario introduzca su nombre
 		txtNombre = new JTextField();
+		txtNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtNombre.setForeground(new Color(255, 255, 255));
+		txtNombre.setBorder(null);
+		txtNombre.setBackground(new Color(0, 0, 160));
 		txtNombre.setBounds(690, 177, 202, 33);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		// Etiqueta indicativa "Nombre Jugador" encima del campo de texto
-		JLabel lblNombre = new JLabel("Nombre Jugador");
+		JLabel lblNombre = new JLabel("NOMBRE JUGADOR");
 		lblNombre.setForeground(new Color(255, 255, 255));
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombre.setFont(new Font("Sylfaen", Font.BOLD, 17));
+		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblNombre.setBounds(680, 148, 218, 33);
 		contentPane.add(lblNombre);
 		
@@ -81,6 +85,7 @@ public class MenuPrincipal extends JFrame {
 		
 		// Creación del botón para iniciar una nueva partida
 		JButton btnNuevaPartida = new JButton("Empezar Partida");
+		btnNuevaPartida.setBorder(null);
 		btnNuevaPartida.setSelectedIcon(null);
 		btnNuevaPartida.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/ImagenesBotones/BotonEmpezar2.png")));
 		
@@ -122,6 +127,7 @@ public class MenuPrincipal extends JFrame {
 		
 		// Creación del botón para acceder a la tabla de puntuaciones (Ranking)
 		JButton btnRanking = new JButton("");
+		btnRanking.setBorder(null);
 		
 		// Evento que se dispara al pulsar el botón de Ranking
 		btnRanking.addActionListener(new ActionListener() {

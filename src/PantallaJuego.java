@@ -13,6 +13,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
+import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
 
 public class PantallaJuego extends JFrame {
 
@@ -54,36 +56,44 @@ public class PantallaJuego extends JFrame {
         setContentPane(contentPane);
 
         btnRespuestaA = new JButton("A");
+        btnRespuestaA.setFont(new Font("Tahoma", Font.BOLD, 17));
+        btnRespuestaA.setBorder(null);
         btnRespuestaA.setForeground(Color.WHITE);
-        btnRespuestaA.setBackground(new Color(0, 64, 128));
-        btnRespuestaA.setBounds(567, 559, 149, 65);
+        btnRespuestaA.setBackground(new Color(64, 0, 128));
+        btnRespuestaA.setBounds(459, 561, 216, 84);
         btnRespuestaA.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
         });
         contentPane.add(btnRespuestaA);
 
         btnRespuestaB = new JButton("B");
+        btnRespuestaB.setFont(new Font("Tahoma", Font.BOLD, 17));
+        btnRespuestaB.setBorder(null);
         btnRespuestaB.setForeground(Color.WHITE);
-        btnRespuestaB.setBackground(new Color(0, 64, 128));
-        btnRespuestaB.setBounds(567, 488, 149, 65);
+        btnRespuestaB.setBackground(new Color(64, 0, 128));
+        btnRespuestaB.setBounds(459, 467, 216, 84);
         btnRespuestaB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
         });
         contentPane.add(btnRespuestaB);
 
         btnRespuestaC = new JButton("C");
+        btnRespuestaC.setFont(new Font("Tahoma", Font.BOLD, 17));
+        btnRespuestaC.setBorder(null);
         btnRespuestaC.setForeground(Color.WHITE);
-        btnRespuestaC.setBackground(new Color(0, 64, 128));
-        btnRespuestaC.setBounds(726, 488, 135, 65);
+        btnRespuestaC.setBackground(new Color(64, 0, 128));
+        btnRespuestaC.setBounds(685, 467, 215, 84);
         btnRespuestaC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
         });
         contentPane.add(btnRespuestaC);
 
         btnRespuestaD = new JButton("D");
+        btnRespuestaD.setFont(new Font("Tahoma", Font.BOLD, 17));
+        btnRespuestaD.setBorder(null);
         btnRespuestaD.setForeground(Color.WHITE);
-        btnRespuestaD.setBackground(new Color(0, 64, 128));
-        btnRespuestaD.setBounds(726, 559, 135, 65);
+        btnRespuestaD.setBackground(new Color(64, 0, 128));
+        btnRespuestaD.setBounds(685, 561, 215, 84);
         btnRespuestaD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
         });
@@ -93,7 +103,7 @@ public class PantallaJuego extends JFrame {
         lblEnunciado.setHorizontalAlignment(SwingConstants.CENTER);
         lblEnunciado.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblEnunciado.setForeground(Color.WHITE);
-        lblEnunciado.setBounds(10, 497, 545, 97);
+        lblEnunciado.setBounds(15, 480, 360, 120);
         contentPane.add(lblEnunciado);
 
         lblDinero = new JLabel("");
@@ -103,17 +113,18 @@ public class PantallaJuego extends JFrame {
         lblDinero.setBounds(749, 11, 149, 47);
         contentPane.add(lblDinero);
 
-        lblNombreJugador = new JLabel("Jugador: " + nombreJugador);
+        lblNombreJugador = new JLabel("JUGADOR:<dynamic>");
         lblNombreJugador.setHorizontalAlignment(SwingConstants.CENTER);
         lblNombreJugador.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblNombreJugador.setForeground(Color.WHITE);
         lblNombreJugador.setBounds(10, 11, 149, 47);
         contentPane.add(lblNombreJugador);
         
-        btnPlantarse = new JButton("Rendirse");
-        btnPlantarse.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        btnPlantarse.setForeground(Color.WHITE);
-        btnPlantarse.setBackground(new Color(128, 128, 128));
+        btnPlantarse = new JButton("RENDIRSE");
+        btnPlantarse.setBorder(null);
+        btnPlantarse.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnPlantarse.setForeground(new Color(255, 255, 255));
+        btnPlantarse.setBackground(new Color(0, 0, 128));
         btnPlantarse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int dineroGanado = logica.getDineroActual();
@@ -129,7 +140,7 @@ public class PantallaJuego extends JFrame {
                 dispose(); 
             }
         });
-        btnPlantarse.setBounds(195, 11, 535, 47);
+        btnPlantarse.setBounds(294, 11, 330, 47);
         contentPane.add(btnPlantarse);
         
         lblNewLabel = new JLabel("");
@@ -137,9 +148,11 @@ public class PantallaJuego extends JFrame {
         lblNewLabel.setBounds(189, 11, 709, 500);
         contentPane.add(lblNewLabel);
         
-        btnComodin50 = new JButton("Comodin 50%");
+        btnComodin50 = new JButton(" 50%");
+        btnComodin50.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnComodin50.setBorder(null);
         btnComodin50.setForeground(new Color(255, 255, 255));
-        btnComodin50.setBackground(new Color(128, 128, 128));
+        btnComodin50.setBackground(new Color(64, 0, 128));
         btnComodin50.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta pActual = listaPreguntas.get(indiceActual);
@@ -165,13 +178,15 @@ public class PantallaJuego extends JFrame {
         lblNewLabel_1 = new JLabel("COMODINES");
         lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel_1.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblNewLabel_1.setBounds(10, 106, 135, 50);
         contentPane.add(lblNewLabel_1);
         
-        btnPublico = new JButton("Comodin Publico");
+        btnPublico = new JButton("PÚBLICO");
+        btnPublico.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnPublico.setBorder(null);
         btnPublico.setForeground(new Color(255, 255, 255));
-        btnPublico.setBackground(new Color(128, 128, 128));
+        btnPublico.setBackground(new Color(64, 0, 128));
         btnPublico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -197,9 +212,11 @@ public class PantallaJuego extends JFrame {
         btnPublico.setBounds(10, 196, 135, 37);
         contentPane.add(btnPublico);
         
-        btnLlamada = new JButton("Comodin LLamada");
+        btnLlamada = new JButton("LLAMADA");
+        btnLlamada.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnLlamada.setBorder(null);
         btnLlamada.setForeground(new Color(255, 255, 255));
-        btnLlamada.setBackground(new Color(128, 128, 128));
+        btnLlamada.setBackground(new Color(64, 0, 128));
         btnLlamada.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -221,7 +238,9 @@ public class PantallaJuego extends JFrame {
         
      // --- COMODÍN DE LA RULETA ---
         // Gira una ruleta y recupera entre 0 y 3 comodines que ya hayas gastado
-        btnRuleta = new JButton("Comodin Ruleta");
+        btnRuleta = new JButton("RULETA");
+        btnRuleta.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnRuleta.setBorder(null);
         btnRuleta.setForeground(new Color(255, 255, 255));
         btnRuleta.setBackground(new Color(95, 41, 160));
         btnRuleta.addActionListener(new ActionListener() {
@@ -264,7 +283,9 @@ public class PantallaJuego extends JFrame {
 
         // --- COMODÍN DEL MAGO ---
         // Solo se puede usar a partir de la pregunta 5 (nivel de seguridad) y te cambia la pregunta
-        btnMago = new JButton("Comodin Mago");
+        btnMago = new JButton("MAGO");
+        btnMago.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btnMago.setBorder(null);
         btnMago.setForeground(new Color(255, 255, 255));
         btnMago.setBackground(new Color(95, 41, 160));
         btnMago.addActionListener(new ActionListener() {
@@ -308,14 +329,16 @@ public class PantallaJuego extends JFrame {
     public void actualizarTablero() {
         if (indiceActual < listaPreguntas.size()) {
             Pregunta p = listaPreguntas.get(indiceActual);
-            lblEnunciado.setText("<html><body style='width: 500px'>" + p.getEnunciado() + "</body></html>");
+            
+            //Usamos etiquetas HTML con un ancho fijo (width: 450px) y centrado
+            lblEnunciado.setText("<html><body style='width: 280px; text-align: center; font-size: 18px;'>" + p.getEnunciado() + "</body></html>");
+            
             btnRespuestaA.setText("A: " + p.getOpciones()[0]);
             btnRespuestaB.setText("B: " + p.getOpciones()[1]);
             btnRespuestaC.setText("C: " + p.getOpciones()[2]);
             btnRespuestaD.setText("D: " + p.getOpciones()[3]);
             lblDinero.setText("Dinero: " + logica.getDineroActual() + "€");
         } else {
-            // <--- AQUÍ GUARDAMOS EN MONGO AL GANAR EL MILLÓN
             ConexionMongo mongo = new ConexionMongo();
             mongo.guardarPartida(nombreJugador, 1000000);
 
