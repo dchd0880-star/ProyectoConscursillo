@@ -33,7 +33,7 @@ public class PantallaRanking extends JFrame {
         setLocationRelativeTo(null); // Centra la ventana
 
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(95, 41, 160)); // Morado oscuro para que pegue con tus botones
+        contentPane.setBackground(new Color(0, 0, 128)); // Morado oscuro para que pegue con tus botones
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         contentPane.setLayout(new BorderLayout(0, 10));
         setContentPane(contentPane);
@@ -59,8 +59,9 @@ public class PantallaRanking extends JFrame {
 
         // 3. Botón para salir
         JButton btnCerrar = new JButton("VOLVER AL MENÚ");
+        btnCerrar.setForeground(new Color(255, 255, 255));
         btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
-        btnCerrar.setBackground(Color.WHITE);
+        btnCerrar.setBackground(new Color(128, 128, 128));
         btnCerrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();

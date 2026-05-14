@@ -52,7 +52,7 @@ public class MenuPrincipal extends JFrame {
 		
 		// Creación y configuración del panel contenedor principal
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(187, 119, 255)); // Fondo morado
+		contentPane.setBackground(new Color(0, 0, 128)); // Fondo morado
 		contentPane.setForeground(new Color(187, 119, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

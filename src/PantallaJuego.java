@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import java.awt.SystemColor;
 
 public class PantallaJuego extends JFrame {
 
@@ -33,6 +34,7 @@ public class PantallaJuego extends JFrame {
     private JLabel lblNewLabel_1;
     private JButton btnPublico;
     private JButton btnLlamada;
+    private JLabel lblNewLabel_2;
 
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
         setTitle("El Concursillo");
@@ -45,33 +47,41 @@ public class PantallaJuego extends JFrame {
         setLocationRelativeTo(null);
 
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(187, 119, 255)); 
+        contentPane.setBackground(new Color(0, 0, 128)); 
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
         btnRespuestaA = new JButton("A");
-        btnRespuestaA.setBounds(581, 559, 135, 56);
+        btnRespuestaA.setForeground(Color.WHITE);
+        btnRespuestaA.setBackground(new Color(0, 64, 128));
+        btnRespuestaA.setBounds(567, 559, 149, 65);
         btnRespuestaA.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
         });
         contentPane.add(btnRespuestaA);
 
         btnRespuestaB = new JButton("B");
-        btnRespuestaB.setBounds(581, 497, 135, 56);
+        btnRespuestaB.setForeground(Color.WHITE);
+        btnRespuestaB.setBackground(new Color(0, 64, 128));
+        btnRespuestaB.setBounds(567, 488, 149, 65);
         btnRespuestaB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
         });
         contentPane.add(btnRespuestaB);
 
         btnRespuestaC = new JButton("C");
-        btnRespuestaC.setBounds(726, 497, 135, 56);
+        btnRespuestaC.setForeground(Color.WHITE);
+        btnRespuestaC.setBackground(new Color(0, 64, 128));
+        btnRespuestaC.setBounds(726, 488, 135, 65);
         btnRespuestaC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
         });
         contentPane.add(btnRespuestaC);
 
         btnRespuestaD = new JButton("D");
-        btnRespuestaD.setBounds(726, 559, 135, 56);
+        btnRespuestaD.setForeground(Color.WHITE);
+        btnRespuestaD.setBackground(new Color(0, 64, 128));
+        btnRespuestaD.setBounds(726, 559, 135, 65);
         btnRespuestaD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
         });
@@ -81,7 +91,7 @@ public class PantallaJuego extends JFrame {
         lblEnunciado.setHorizontalAlignment(SwingConstants.CENTER);
         lblEnunciado.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblEnunciado.setForeground(Color.WHITE);
-        lblEnunciado.setBounds(26, 507, 545, 97);
+        lblEnunciado.setBounds(10, 497, 545, 97);
         contentPane.add(lblEnunciado);
 
         lblDinero = new JLabel("");
@@ -99,6 +109,9 @@ public class PantallaJuego extends JFrame {
         contentPane.add(lblNombreJugador);
         
         btnPlantarse = new JButton("Rendirse");
+        btnPlantarse.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        btnPlantarse.setForeground(Color.WHITE);
+        btnPlantarse.setBackground(new Color(128, 128, 128));
         btnPlantarse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int dineroGanado = logica.getDineroActual();
@@ -114,7 +127,7 @@ public class PantallaJuego extends JFrame {
                 dispose(); 
             }
         });
-        btnPlantarse.setBounds(195, 11, 516, 37);
+        btnPlantarse.setBounds(195, 11, 535, 47);
         contentPane.add(btnPlantarse);
         
         lblNewLabel = new JLabel("");
@@ -124,7 +137,7 @@ public class PantallaJuego extends JFrame {
         
         btnComodin50 = new JButton("Comodin 50%");
         btnComodin50.setForeground(new Color(255, 255, 255));
-        btnComodin50.setBackground(new Color(95, 41, 160));
+        btnComodin50.setBackground(new Color(128, 128, 128));
         btnComodin50.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta pActual = listaPreguntas.get(indiceActual);
@@ -148,14 +161,15 @@ public class PantallaJuego extends JFrame {
         contentPane.add(btnComodin50);
         
         lblNewLabel_1 = new JLabel("COMODINES");
+        lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-        lblNewLabel_1.setBounds(10, 106, 110, 50);
+        lblNewLabel_1.setBounds(10, 106, 135, 50);
         contentPane.add(lblNewLabel_1);
         
         btnPublico = new JButton("Comodin Publico");
         btnPublico.setForeground(new Color(255, 255, 255));
-        btnPublico.setBackground(new Color(95, 41, 160));
+        btnPublico.setBackground(new Color(128, 128, 128));
         btnPublico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -183,7 +197,7 @@ public class PantallaJuego extends JFrame {
         
         btnLlamada = new JButton("Comodin LLamada");
         btnLlamada.setForeground(new Color(255, 255, 255));
-        btnLlamada.setBackground(new Color(95, 41, 160));
+        btnLlamada.setBackground(new Color(128, 128, 128));
         btnLlamada.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
@@ -202,6 +216,11 @@ public class PantallaJuego extends JFrame {
         });
         btnLlamada.setBounds(10, 244, 135, 37);
         contentPane.add(btnLlamada);
+        
+        lblNewLabel_2 = new JLabel("");
+        lblNewLabel_2.setIcon(new ImageIcon(PantallaJuego.class.getResource("/imagenes/IlloJuanPreguntas.png")));
+        lblNewLabel_2.setBounds(619, 129, 302, 463);
+        contentPane.add(lblNewLabel_2);
 
         BaseDatosLocal bd = new BaseDatosLocal();
         this.listaPreguntas = bd.cargarPreguntas();
