@@ -34,6 +34,8 @@ public class PantallaJuego extends JFrame {
     private JLabel lblNewLabel_1;
     private JButton btnPublico;
     private JButton btnLlamada;
+    private JButton btnRuleta;
+    private JButton btnMago;
     private JLabel lblNewLabel_2;
 
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
@@ -216,6 +218,82 @@ public class PantallaJuego extends JFrame {
         });
         btnLlamada.setBounds(10, 244, 135, 37);
         contentPane.add(btnLlamada);
+        
+     // --- COMODÍN DE LA RULETA ---
+        // Gira una ruleta y recupera entre 0 y 3 comodines que ya hayas gastado
+        btnRuleta = new JButton("Comodin Ruleta");
+        btnRuleta.setForeground(new Color(255, 255, 255));
+        btnRuleta.setBackground(new Color(95, 41, 160));
+        btnRuleta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Genera un número aleatorio entre 0 y 3
+                int recuperados = (int) (Math.random() * 4);
+                int contador = 0;
+
+                // Lógica para reactivar botones gastados (si están en gris/deshabilitados)
+                if (!btnComodin50.isEnabled() && contador < recuperados) {
+                    btnComodin50.setEnabled(true);
+                    btnComodin50.setBackground(new Color(95, 41, 160));
+                    contador++;
+                }
+                if (!btnPublico.isEnabled() && contador < recuperados) {
+                    btnPublico.setEnabled(true);
+                    btnPublico.setBackground(new Color(95, 41, 160));
+                    contador++;
+                }
+                if (!btnLlamada.isEnabled() && contador < recuperados) {
+                    btnLlamada.setEnabled(true);
+                    btnLlamada.setBackground(new Color(95, 41, 160));
+                    contador++;
+                }
+
+                // Mensaje informando del resultado de la tirada
+                if (recuperados == 0) {
+                    JOptionPane.showMessageDialog(null, "¡Pfff, mala suerte illo! La ruleta ha caído en 0. No recuperas nada.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "¡Ojo! La ruleta ha girado y recuperas: " + contador + " comodín/es.");
+                }
+
+                // Deshabilitamos la ruleta para que solo se use una vez
+                btnRuleta.setEnabled(false);
+                btnRuleta.setBackground(Color.GRAY);
+            }
+        });
+        btnRuleta.setBounds(10, 292, 135, 37); // Colocado debajo del comodín de la llamada
+        contentPane.add(btnRuleta);
+
+        // --- COMODÍN DEL MAGO ---
+        // Solo se puede usar a partir de la pregunta 5 (nivel de seguridad) y te cambia la pregunta
+        btnMago = new JButton("Comodin Mago");
+        btnMago.setForeground(new Color(255, 255, 255));
+        btnMago.setBackground(new Color(95, 41, 160));
+        btnMago.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Comprobamos si estamos al menos en la pregunta 5 (índice 4 o superior)
+                if (indiceActual < 4) {
+                    JOptionPane.showMessageDialog(null, "¡Illo, el Mago aún está dormido! Solo puedes usarlo a partir de la pregunta 5.", "Mago no disponible", JOptionPane.WARNING_MESSAGE);
+                    return; // Salimos sin gastar el comodín
+                }
+
+                // Como tu BD carga 16 preguntas y el juego usa 15, la posición 15 es la pregunta de reserva perfecta
+                if (listaPreguntas.size() > 15) {
+                    // Sustituimos la pregunta actual por la pregunta extra (la número 16)
+                    listaPreguntas.set(indiceActual, listaPreguntas.get(15));
+                    
+                    actualizarTablero(); // Refrescamos los textos de la pantalla
+                    
+                    JOptionPane.showMessageDialog(null, "¡*Puf*! El Mago ha hecho su magia y te ha cambiado la pregunta por otra del mismo calibre.");
+                    
+                    // Gastamos el comodín
+                    btnMago.setEnabled(false);
+                    btnMago.setBackground(Color.GRAY);
+                } else {
+                    JOptionPane.showMessageDialog(null, "¡No quedan preguntas de reserva en la chistera!");
+                }
+            }
+        });
+        btnMago.setBounds(10, 340, 135, 37); // Colocado debajo de la Ruleta
+        contentPane.add(btnMago);
         
         lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(PantallaJuego.class.getResource("/imagenes/IlloJuanPreguntas.png")));
