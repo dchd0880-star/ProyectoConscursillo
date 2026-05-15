@@ -17,43 +17,56 @@ import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import java.awt.Cursor;
 
-// Ventana principal donde se desarrolla la partida del concurso
+/**
+ * Ventana principal donde se desarrolla la partida del concurso.
+ * Gestiona la interfaz gráfica, la interacción del jugador y la lógica visual de los comodines.
+ */
 public class PantallaJuego extends JFrame {
 
+    // Identificador de versión para la serialización de la clase
     private static final long serialVersionUID = 1L;
+    
+    // Contenedor principal de la ventana
     private JPanel contentPane;
     
-    // Referencias a la lógica, datos del jugador y pool de preguntas
-    private LogicaJuego logica;
-    private String nombreJugador;
-    private ArrayList<Pregunta> listaPreguntas;
-    private int indiceActual = 0; // Rastrea en qué pregunta de la lista estamos
+    // --- VARIABLES DE LÓGICA Y DATOS ---
+    private LogicaJuego logica;               // Instancia que controla las reglas de dinero y aciertos
+    private String nombreJugador;             // Nombre introducido por el usuario en el menú
+    private ArrayList<Pregunta> listaPreguntas; // Pool de 16 preguntas cargadas desde MongoDB Atlas
+    private int indiceActual = 0;             // Rastrea en qué pregunta de la lista estamos actualmente
 
-    // Componentes de la interfaz (Etiquetas y Botones)
-    private JLabel lblEnunciado;
-    private JLabel lblDinero;
-    private JLabel lblNombreJugador;
-    private JButton btnRespuestaA, btnRespuestaB, btnRespuestaC, btnRespuestaD, btnPlantarse;
-    private JLabel lblNewLabel;
+    // --- COMPONENTES DE LA INTERFAZ ---
+    private JLabel lblEnunciado;              // Muestra el texto de la pregunta
+    private JLabel lblDinero;                 // Muestra el premio actual acumulado
+    private JLabel lblNombreJugador;          // Muestra el nombre del jugador en la esquina
+    private JButton btnRespuestaA, btnRespuestaB, btnRespuestaC, btnRespuestaD; // Botones de las 4 opciones
+    private JButton btnPlantarse;             // Botón para retirarse con el dinero
+    private JLabel lblNewLabel;               // Imagen de fondo/decorativa
+    private JLabel lblNewLabel_1;             // Título "COMODINES"
+    private JLabel lblNewLabel_2;             // Imagen decorativa de IlloJuan
+    
+    // Botones de los 5 comodines
     private JButton btnComodin50;
-    private JLabel lblNewLabel_1;
     private JButton btnPublico;
     private JButton btnLlamada;
     private JButton btnRuleta;
     private JButton btnMago;
-    private JLabel lblNewLabel_2;
 
-    // Constructor: Inicializa la interfaz y carga los datos de la partida
+    /**
+     * Constructor: Inicializa la interfaz y carga los datos de la partida.
+     * @param logicaRecibida Instancia de LogicaJuego iniciada en el menú.
+     * @param nombreRecibido Nombre del jugador.
+     */
     public PantallaJuego(LogicaJuego logicaRecibida, String nombreRecibido) {
         setTitle("El Concursillo");
         this.logica = logicaRecibida;
         this.nombreJugador = nombreRecibido;
 
-        // Configuración de la ventana
+        // --- CONFIGURACIÓN BÁSICA DE LA VENTANA ---
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 924, 692);
         setResizable(false);
-        setLocationRelativeTo(null); // Centra la ventana en pantalla
+        setLocationRelativeTo(null); // Centra la ventana exactamente en el medio de la pantalla
 
         // Panel principal con fondo azul oscuro y diseño absoluto (null layout)
         contentPane = new JPanel();
@@ -61,7 +74,9 @@ public class PantallaJuego extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-        // --- CONFIGURACIÓN DE BOTONES DE RESPUESTA (A, B, C, D) ---
+        // =====================================================================
+        // 1. CONFIGURACIÓN DE BOTONES DE RESPUESTA (A, B, C, D)
+        // =====================================================================
         
         btnRespuestaA = new JButton("A");
         btnRespuestaA.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -69,9 +84,9 @@ public class PantallaJuego extends JFrame {
         btnRespuestaA.setForeground(Color.WHITE);
         btnRespuestaA.setBackground(new Color(64, 0, 128));
         btnRespuestaA.setBounds(459, 561, 216, 84);
-        btnRespuestaA.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRespuestaA.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cursor de "manita" al pasar por encima
         btnRespuestaA.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); }
+            public void actionPerformed(ActionEvent e) { comprobarRespuesta(0); } // Envía índice 0 para la A
         });
         contentPane.add(btnRespuestaA);
 
@@ -83,7 +98,7 @@ public class PantallaJuego extends JFrame {
         btnRespuestaB.setBounds(459, 467, 216, 84);
         btnRespuestaB.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRespuestaB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); }
+            public void actionPerformed(ActionEvent e) { comprobarRespuesta(1); } // Envía índice 1 para la B
         });
         contentPane.add(btnRespuestaB);
 
@@ -95,7 +110,7 @@ public class PantallaJuego extends JFrame {
         btnRespuestaC.setBounds(685, 467, 215, 84);
         btnRespuestaC.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRespuestaC.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); }
+            public void actionPerformed(ActionEvent e) { comprobarRespuesta(2); } // Envía índice 2 para la C
         });
         contentPane.add(btnRespuestaC);
 
@@ -107,12 +122,15 @@ public class PantallaJuego extends JFrame {
         btnRespuestaD.setBounds(685, 561, 215, 84);
         btnRespuestaD.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRespuestaD.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); }
+            public void actionPerformed(ActionEvent e) { comprobarRespuesta(3); } // Envía índice 3 para la D
         });
         contentPane.add(btnRespuestaD);
 
-        // --- ETIQUETAS DE INFORMACIÓN (PREGUNTA, DINERO, NOMBRE) ---
+        // =====================================================================
+        // 2. ETIQUETAS DE INFORMACIÓN (PREGUNTA, DINERO, NOMBRE)
+        // =====================================================================
 
+        // Etiqueta invisible que contendrá el texto de la pregunta
         lblEnunciado = new JLabel("");
         lblEnunciado.setHorizontalAlignment(SwingConstants.CENTER);
         lblEnunciado.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -120,6 +138,7 @@ public class PantallaJuego extends JFrame {
         lblEnunciado.setBounds(15, 480, 360, 120);
         contentPane.add(lblEnunciado);
 
+        // Indicador de premio acumulado
         lblDinero = new JLabel("");
         lblDinero.setHorizontalAlignment(SwingConstants.CENTER);
         lblDinero.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -127,6 +146,7 @@ public class PantallaJuego extends JFrame {
         lblDinero.setBounds(749, 11, 149, 47);
         contentPane.add(lblDinero);
 
+        // Muestra el nombre del jugador en la esquina superior izquierda
         lblNombreJugador = new JLabel("JUGADOR: " + nombreJugador);
         lblNombreJugador.setHorizontalAlignment(SwingConstants.CENTER);
         lblNombreJugador.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -134,7 +154,8 @@ public class PantallaJuego extends JFrame {
         lblNombreJugador.setBounds(10, 11, 291, 47);
         contentPane.add(lblNombreJugador);
         
-        // Botón para retirarse con el premio acumulado actual
+        // --- BOTÓN RENDIRSE ---
+        // Permite al jugador abandonar la partida y llevarse el dinero actual
         btnPlantarse = new JButton("RENDIRSE");
         btnPlantarse.setBorder(null);
         btnPlantarse.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -145,27 +166,30 @@ public class PantallaJuego extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int dineroGanado = logica.getDineroActual();
                 
-                // Guarda la partida en MongoDB Atlas antes de cerrar
+                // Guarda la partida en la base de datos de MongoDB Atlas antes de cerrar
                 ConexionMongo mongo = new ConexionMongo();
                 mongo.guardarPartida(nombreJugador, dineroGanado);
                 
+                // Muestra un mensaje de despedida con el premio
                 JOptionPane.showMessageDialog(null, 
                     "¡Sabia decisión, " + nombreJugador + "!\n" +
                     "Has decidido plantarte y te llevas: " + dineroGanado + "€");
           
-                dispose(); 
+                dispose(); // Cierra la ventana del juego
             }
         });
         btnPlantarse.setBounds(294, 11, 330, 47);
         contentPane.add(btnPlantarse);
         
-        // Imágenes decorativas y logotipos
+        // Imagen decorativa del overlay de las preguntas
         lblNewLabel = new JLabel("");
         lblNewLabel.setIcon(new ImageIcon(PantallaJuego.class.getResource("/imagenes/FotoPreguntas.png")));
         lblNewLabel.setBounds(189, 11, 709, 500);
         contentPane.add(lblNewLabel);
         
-        // --- SECCIÓN DE COMODINES ---
+        // =====================================================================
+        // 3. SECCIÓN DE COMODINES
+        // =====================================================================
 
         lblNewLabel_1 = new JLabel("COMODINES");
         lblNewLabel_1.setForeground(Color.WHITE);
@@ -174,7 +198,8 @@ public class PantallaJuego extends JFrame {
         lblNewLabel_1.setBounds(10, 106, 135, 50);
         contentPane.add(lblNewLabel_1);
 
-        // Comodín 50%: Elimina dos opciones incorrectas
+        // --- COMODÍN 50% ---
+        // Elimina el texto de dos botones de respuesta incorrectos
         btnComodin50 = new JButton(" 50%");
         btnComodin50.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnComodin50.setBorder(null);
@@ -187,7 +212,7 @@ public class PantallaJuego extends JFrame {
                 int correcta = pActual.getRespuestaCorrecta();
                 int borradores = 0;
 
-                // Recorre las opciones y borra el texto de las dos primeras incorrectas que encuentre
+                // Recorre las 4 opciones y borra el texto de las dos primeras incorrectas que encuentre
                 for (int i = 0; i < 4; i++) {
                     if (i != correcta && borradores < 2) {
                         if (i == 0) btnRespuestaA.setText("");
@@ -198,13 +223,14 @@ public class PantallaJuego extends JFrame {
                     }
                 }
                 btnComodin50.setEnabled(false); // Deshabilita el botón tras su uso
-                btnComodin50.setBackground(Color.GRAY);
+                btnComodin50.setBackground(Color.GRAY); // Lo pone gris para indicar que está gastado
             }
         });
         btnComodin50.setBounds(10, 148, 135, 37);
         contentPane.add(btnComodin50);
         
-        // Comodín Público: Muestra una estadística simulada de acierto
+        // --- COMODÍN PÚBLICO ---
+        // Muestra una estadística simulada que apunta fuertemente a la respuesta correcta
         btnPublico = new JButton("PÚBLICO");
         btnPublico.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnPublico.setBorder(null);
@@ -214,8 +240,10 @@ public class PantallaJuego extends JFrame {
         btnPublico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Pregunta p = listaPreguntas.get(indiceActual);
+                // Transforma el índice (0-3) en una letra (A-D)
                 char respuestaCorrecta = (char) ('A' + p.getRespuestaCorrecta());
 
+                // Muestra un JOptionPane con estadísticas ficticias
                 String estadistica = "Resultados del Público:\n" +
                                      "A: 10%\n" +
                                      "B: 15%\n" +
@@ -232,7 +260,8 @@ public class PantallaJuego extends JFrame {
         btnPublico.setBounds(10, 196, 135, 37);
         contentPane.add(btnPublico);
         
-        // Comodín Llamada: Sugiere la respuesta correcta mediante un diálogo
+        // --- COMODÍN LLAMADA ---
+        // Sugiere la respuesta correcta mediante un cuadro de diálogo de un amigo ficticio
         btnLlamada = new JButton("LLAMADA");
         btnLlamada.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnLlamada.setBorder(null);
@@ -258,7 +287,8 @@ public class PantallaJuego extends JFrame {
         btnLlamada.setBounds(10, 244, 135, 37);
         contentPane.add(btnLlamada);
         
-        // Comodín Ruleta: Recupera aleatoriamente entre 0 y 3 comodines gastados
+        // --- COMODÍN RULETA ---
+        // Genera un número aleatorio para reactivar los comodines básicos (50, Público, Llamada) si se han gastado
         btnRuleta = new JButton("RULETA");
         btnRuleta.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnRuleta.setBorder(null);
@@ -267,13 +297,13 @@ public class PantallaJuego extends JFrame {
         btnRuleta.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRuleta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int recuperados = (int) (Math.random() * 4);
+                int recuperados = (int) (Math.random() * 4); // Aleatorio entre 0 y 3
                 int contador = 0;
 
-                // Intenta reactivar los comodines básicos si están deshabilitados
+                // Intenta reactivar botones deshabilitados secuencialmente hasta agotar la tirada
                 if (!btnComodin50.isEnabled() && contador < recuperados) {
                     btnComodin50.setEnabled(true);
-                    btnComodin50.setBackground(new Color(64, 0, 128));
+                    btnComodin50.setBackground(new Color(64, 0, 128)); // Vuelve al color original
                     contador++;
                 }
                 if (!btnPublico.isEnabled() && contador < recuperados) {
@@ -287,20 +317,22 @@ public class PantallaJuego extends JFrame {
                     contador++;
                 }
 
+                // Feedback al usuario
                 if (recuperados == 0) {
                     JOptionPane.showMessageDialog(null, "¡Pfff, mala suerte illo! La ruleta ha caído en 0.");
                 } else {
                     JOptionPane.showMessageDialog(null, "¡La ruleta ha girado y recuperas " + contador + " comodín/es!");
                 }
 
-                btnRuleta.setEnabled(false);
+                btnRuleta.setEnabled(false); // Solo se puede girar una vez por partida
                 btnRuleta.setBackground(Color.GRAY);
             }
         });
         btnRuleta.setBounds(10, 292, 135, 37);
         contentPane.add(btnRuleta);
 
-        // Comodín Mago: Cambia la pregunta actual por una de reserva (solo nivel 5+)
+        // --- COMODÍN MAGO ---
+        // Cambia la pregunta actual por la de reserva (la número 16 del pool). Requiere nivel de seguridad.
         btnMago = new JButton("MAGO");
         btnMago.setFont(new Font("Tahoma", Font.BOLD, 15));
         btnMago.setBorder(null);
@@ -309,14 +341,18 @@ public class PantallaJuego extends JFrame {
         btnMago.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnMago.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (indiceActual < 4) { // Bloqueo por nivel de seguridad
+                if (indiceActual < 4) { // Bloqueo: Solo disponible a partir de la pregunta 5
                     JOptionPane.showMessageDialog(null, "¡El Mago solo aparece a partir de la pregunta 5!", "Mago no disponible", JOptionPane.WARNING_MESSAGE);
-                    return;
+                    return; // Aborta la acción para no gastar el comodín
                 }
 
-                if (listaPreguntas.size() > 15) { // Usa la pregunta nº 16 del pool como reserva
+                // Verifica que haya una pregunta de reserva (como cargamos 16, la posición 15 existe)
+                if (listaPreguntas.size() > 15) { 
+                    // Sustituye la pregunta actual por la última del ArrayList
                     listaPreguntas.set(indiceActual, listaPreguntas.get(15));
-                    actualizarTablero(); 
+                    
+                    actualizarTablero(); // Redibuja la interfaz con la nueva pregunta
+                    
                     JOptionPane.showMessageDialog(null, "¡El Mago ha cambiado la pregunta!");
                     btnMago.setEnabled(false);
                     btnMago.setBackground(Color.GRAY);
@@ -326,55 +362,78 @@ public class PantallaJuego extends JFrame {
         btnMago.setBounds(10, 340, 135, 37);
         contentPane.add(btnMago);
         
+        // Imagen decorativa del personaje (IlloJuan)
         lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(PantallaJuego.class.getResource("/imagenes/IlloJuanPreguntas.png")));
         lblNewLabel_2.setBounds(619, 129, 302, 463);
         contentPane.add(lblNewLabel_2);
 
-        // Carga de preguntas desde MongoDB Atlas al iniciar la ventana
+        // =====================================================================
+        // 4. INICIO DEL MOTOR DEL JUEGO
+        // =====================================================================
+        
+        // Instancia la base de datos y trae las 16 preguntas desde MongoDB Atlas
         BaseDatosLocal bd = new BaseDatosLocal();
         this.listaPreguntas = bd.cargarPreguntas();
-        actualizarTablero(); // Dibuja la primera pregunta
+        
+        // Dibuja la primera pregunta en la pantalla
+        actualizarTablero(); 
     }
 
-    // Refresca los textos de la interfaz con la pregunta actual del pool
+    /**
+     * Extrae la pregunta actual del ArrayList y refresca todos los textos de la interfaz.
+     * También controla si el jugador ha llegado al final (victoria de 1 millón).
+     */
     public void actualizarTablero() {
-        if (indiceActual < 15) { // Mientras no hayamos completado las 15 preguntas
+        if (indiceActual < 15) { // Mientras no hayamos superado las 15 rondas reglamentarias
             Pregunta p = listaPreguntas.get(indiceActual);
             
-            // Renderizado de la pregunta con HTML para soportar saltos de línea y centrado
+            // Renderizado avanzado del enunciado utilizando etiquetas HTML.
+            // Permite forzar el salto de línea al llegar a los 280px para que no pise los botones,
+            // aplicando además el centrado perfecto y fijando un tamaño de letra adecuado.
             lblEnunciado.setText("<html><body style='width: 280px; text-align: center; font-size: 18px;'>" + p.getEnunciado() + "</body></html>");
             
+            // Vuelca las 4 posibles respuestas en los botones
             btnRespuestaA.setText("A: " + p.getOpciones()[0]);
             btnRespuestaB.setText("B: " + p.getOpciones()[1]);
             btnRespuestaC.setText("C: " + p.getOpciones()[2]);
             btnRespuestaD.setText("D: " + p.getOpciones()[3]);
+            
+            // Muestra cuánto dinero asegura esta ronda
             lblDinero.setText("Dinero: " + logica.getDineroActual() + "€");
         } else {
-            // Caso de victoria total: guarda el millón y termina
+            // --- CASO DE VICTORIA TOTAL ---
+            // Si el índice ha llegado a 15, el jugador ha respondido todo correctamente
             ConexionMongo mongo = new ConexionMongo();
-            mongo.guardarPartida(nombreJugador, 1000000);
+            mongo.guardarPartida(nombreJugador, 1000000); // Guarda el millón en el ranking mundial
 
             JOptionPane.showMessageDialog(this, "¡ENHORABUENA! ¡ERES MILLONARIO!");
-            dispose();
+            dispose(); // Cierra el juego
         }
     }
 
-    // Procesa el clic en una de las respuestas A, B, C o D
+    /**
+     * Procesa la pulsación de los botones de respuesta y delega en LogicaJuego para ver si es correcto.
+     * @param opcion El índice (0-3) correspondiente a la opción elegida por el jugador.
+     */
     private void comprobarRespuesta(int opcion) {
+        // Llama a la lógica central. Devuelve true si acierta.
         if (logica.comprobarRespuesta(listaPreguntas.get(indiceActual), opcion)) {
             JOptionPane.showMessageDialog(this, "¡Correcto!");
-            indiceActual++;
-            actualizarTablero(); // Avanza a la siguiente pregunta
+            indiceActual++;      // Avanza al siguiente nivel
+            actualizarTablero(); // Redibuja la interfaz con el siguiente reto
         } else {
-            // Caso de fallo: Calcula premio según nivel de seguridad y guarda en Atlas
+            // --- CASO DE FALLO ---
+            // Pide a la lógica que determine a qué punto de seguridad cae el jugador
             int premioConsolacion = logica.getDineroSiFalla();
             
+            // Guarda la puntuación de consolación en la nube
             ConexionMongo mongo = new ConexionMongo();
             mongo.guardarPartida(nombreJugador, premioConsolacion);
 
+            // Avisa de la derrota y el premio final
             JOptionPane.showMessageDialog(this, "¡Has fallado! Te llevas: " + premioConsolacion + "€");
-            dispose(); 
+            dispose(); // Termina la partida
         }
     }
 }
